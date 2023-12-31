@@ -19,7 +19,7 @@ def test_func():
         for c in host_name:
             if c.islower():
                 print(f"{host_name} has lowercase characters in hostname")
-                send_new_cmd = conn.send_configs([f"hostname  {host_name.upper()}", "do wr"])
+                send_new_cmd = conn.send_configs([f"hostname {host_name.upper()}", "do wr"])
                 #print(send_new_cmd)
                 break
             else:
