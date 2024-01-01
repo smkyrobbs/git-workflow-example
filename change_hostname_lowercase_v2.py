@@ -15,17 +15,29 @@ def test_func():
         response = conn.send_command("show version")
         structured_data = response.textfsm_parse_output()[0]
         host_name = structured_data["hostname"]
-        #print(host_name)
+        
+#This line of code tests to see if device follows naming convention.       
+        if host_name.startswith("CSR"):
+            with open ("Naming_Standards.txt",'a') as f:
+                f.write(f"{host_name} follows naming convention\n")
+        elif host_name.startswith("csr"):
+            with open ("Naming_Standards.txt",'a') as f:
+                f.write(f"{host_name} follows naming convention but needs to be adjusted\n")
+        else:
+            with open ("Remediate_Hostname.txt",'a') as f:
+                f.write(f"{host_name} does not follow naming convention\n")
+
+#Testing to see if any letter in the hostname is lowecase. If it is, this line of code will update the hostname to all uppercase.
         for c in host_name:
             if c.islower():
                 print(f"{host_name} has lowercase characters in hostname")
-                send_new_cmd = conn.send_configs([f"hostname {host_name.upper()}", "do wr"])
-                #print(send_new_cmd)
+                conn.send_configs([f"hostname {host_name.upper()}", "do wr"])
                 break
             else:
-                print(f"{host_name} is all uppercase")
-                break
-        #rprint(structured_data)
+                with open ("log_uppercase.txt",'a') as f:
+                    f.write(f"{c} in {host_name} is uppercase\n")
+
+
 
 if __name__ == "__main__":
     test_func()
